@@ -3,9 +3,20 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+My personal project
+Analysing personal budget
+
+Questions:
+
+Is it cheaper to live in Scotland than in England?
+Have we saved money since the start of the pandemic?
+What is the difference between living costs in England and in Scotland?
+
 Reading libraries
 ```{r}
 library(tidyverse)
+library(janitor)
+library(lubridate)
 ```
 
 Reading in data
@@ -14,9 +25,43 @@ budget <- read_csv("Joint Budget as of 2022-02-22 0208 PM - Budget.csv")
 register <- read_csv("Joint Budget as of 2022-02-22 0208 PM - Register.csv")
 ```
 
+initial data exploration
+```{r}
+head(budget)
+```
+
+Notes for initial data cleaning:
+- dates need to be cleaned
+- column names need to be cleaned
+- some variables likely need to be fixed (there seem to be quite a lot)
+- not clear what the difference is between budget and register
+- I'll initially focus on the "budget" dataset - the register seems confusing?
+
 ```{r}
 budget %>%
-  ggplot(aes(x = Month, y = Budgeted)) +
+  clean_names() %>%
+  separate(month, into = c("month", "year"), sep = " ", remove = TRUE) %>%
+  mutate(year = as.numeric(year)) %>%
+  mutate(month = as.numeric(case_when("Apr" == "Apr" ~ "04",
+                            "May" == "May" ~ "05",
+                            "Jun" == "Jun"  ~ "06",
+                            "Jul" == "Jul"  ~ "07",
+                            "Aug" == "Aug"  ~ "08",
+                            "Sep" == "Sep"  ~ "09",
+                            "Oct" == "Oct"  ~ "10",
+                            "Nov" == "Nov"  ~ "11",
+                            "Dec" == "Dec"  ~ "12",
+                            "Jan" == "Jan"  ~ "01",
+                            "Feb" == "Feb"  ~ "02",
+                            "Mar" == "Mar"  ~ "03"))) %>%
+  
+  
+```
+
+
+```{r}
+budget %>%
+  ggplot(aes(x = Month, y = Activity)) +
   geom_col() 
 ```
 
