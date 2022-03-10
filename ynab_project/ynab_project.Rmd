@@ -1,0 +1,22 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Reading libraries
+```{r}
+library(tidyverse)
+```
+
+Reading in data
+```{r}
+budget <- read_csv("Joint Budget as of 2022-02-22 0208 PM - Budget.csv")
+register <- read_csv("Joint Budget as of 2022-02-22 0208 PM - Register.csv")
+```
+
+```{r}
+budget %>%
+  ggplot(aes(x = Month, y = Budgeted)) +
+  geom_col() 
+```
+
