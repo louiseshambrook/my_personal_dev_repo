@@ -42,21 +42,27 @@ budget_clean <- budget %>%
   clean_names() %>%
   separate(month, into = c("month", "year"), sep = " ", remove = TRUE) %>%
   mutate(year = as.numeric(year)) %>%
-  mutate(month = as.numeric(case_when("Apr" == "Apr" ~ "04",
-                            "May" == "May" ~ "05",
-                            "Jun" == "Jun"  ~ "06",
-                            "Jul" == "Jul"  ~ "07",
-                            "Aug" == "Aug"  ~ "08",
-                            "Sep" == "Sep"  ~ "09",
-                            "Oct" == "Oct"  ~ "10",
-                            "Nov" == "Nov"  ~ "11",
-                            "Dec" == "Dec"  ~ "12",
-                            "Jan" == "Jan"  ~ "01",
-                            "Feb" == "Feb"  ~ "02",
-                            "Mar" == "Mar"  ~ "03"))) %>%
-  unite(col = "date", c("month", "year"), sep = "")
+  mutate(month = as.numeric(case_when(month == "Jan" ~ "01",
+                           month == "Feb" ~ "02",
+                           month == "Mar" ~ "03",
+                           month == "Apr" ~ "04",
+                           month == "May" ~ "05",
+                           month == "Jun" ~ "06",
+                           month == "Jul" ~ "07",
+                           month == "Aug" ~ "08",
+                           month == "Sep" ~ "09",
+                           month == "Oct" ~ "10",
+                           month == "Nov" ~ "11",
+                           month == "Dec" ~ "12")))
+  # mutate(date = as.numeric(date))
   
 ```
+
+```{r}
+  budget_clean %>%
+  distinct(month)                        
+```
+
 
 ```{r}
 budget_clean %>%
@@ -93,5 +99,176 @@ SO - I will:
 - rename the columns (main, and subcat)
 - change the subcat variables
 
+```{r}
+# renaming the columns
+budget_clean <- budget_clean %>%
+  rename(main_category = "category_group",
+         sub_category = "category")
+```
+
+```{r}
+budget_clean %>%
+  mutate(sub_category = case_when(sub_category == "⚠️ Emergency Buffer" ~ " ",
+                                  sub_category == "Babysitting" == " " ~ " ",
+                                  sub_category == "Back Extension" == " " ~ " ",
+                                  sub_category == "Barry" == " " ~ " ",
+                                  sub_category == "Barry from us" == " " ~ " ",
+                                  sub_category == "Bathroom" == " " ~ " ",
+                                  sub_category == "BIG Holiday 2026ish" == " " ~ " ",
+                                  sub_category == "Bill and Rae" == " " ~ " ",
+                                  sub_category == "Billy and Rae	" == " " ~ " ",
+                                  sub_category == "Birthday Bike" == " " ~ " ",
+                                  sub_category == "Books" == " " ~ " ",
+                                  sub_category == "Car Breakdown (Annual)" == " " ~ " ",
+                                  sub_category == "Car Finance" == " " ~ " ",
+                                  sub_category == "Car Insurance (Annual)" == " " ~ " ",
+                                  sub_category == "Car Insurance (Monthly)" == " " ~ " ",
+                                  sub_category == "Car MOT (Annual)" == " " ~ " ",
+                                  sub_category == "Car Seat" == " " ~ " ",
+                                  sub_category == "Car Services" == " " ~ " ",
+                                  sub_category == "Car Tax (Annual)" == " " ~ " ",
+                                  sub_category == "Cards/Presents" == " " ~ " ",
+                                  sub_category == "Caroline and Richard" == " " ~ " ",
+                                  sub_category == "Caroline, Richard" == " " ~ " ",
+                                  sub_category == "Charlie" == " " ~ " ",
+                                  sub_category == "Chloe" == " " ~ " ",
+                                  sub_category == "Chloe Clothes" == " " ~ " ",
+                                  sub_category == "Chloe Essentials" == " " ~ " ",
+                                  sub_category == "Chloe from us" == " " ~ " ",
+                                  sub_category == "Chloe Toys/Books" == " " ~ " ",
+                                  sub_category == "Chloe's Bedroom" == " " ~ " ",
+                                  sub_category == "Chloe's Birthday" == " " ~ " ",
+                                  sub_category == "Chloe's Future	" == " " ~ " ",
+                                  sub_category == "Christmas 2021 Pot" == " " ~ " ",
+                                  sub_category == "Christmas 2022 Pot" == " " ~ " ",
+                                  sub_category == "Cinema" == " " ~ " ",
+                                  sub_category == "Clothing" == " " ~ " ",
+                                  sub_category == "Contact Lenses" == " " ~ " ",
+                                  sub_category == "Council Tax" ~ " ",
+                                  sub_category == "Crafts" ~ " ",
+                                  sub_category == "DBS Renewal Fee" ~ " ",
+                                  sub_category == "Dental" ~ " ",
+                                  sub_category == "Disney+ (Annual)" ~ " ",
+                                  sub_category == "Eating Out / Take Out" ~ " ",
+                                  sub_category == "Ed and Ling" ~ " ",
+                                  sub_category == "Ed, Ling" ~ " ",
+                                  sub_category == "Energy" ~ " ",
+                                  sub_category == "Entertainment" ~ " ",
+                                  sub_category == "Ezra" ~ " ",
+                                  sub_category == "Factor Fees (3-5 months)" ~ " ",
+                                  sub_category == "Family Holiday 2022" ~ " ",
+                                  sub_category == "Football" ~ " ",
+                                  sub_category == "Front Door Loan Repayment" ~ " ",
+                                  sub_category == "Gaming Upgrade" ~ " ",
+                                  sub_category == "Garden" ~ " ",
+                                  sub_category == "Gardening Disposal" ~ " ",
+                                  sub_category == "Giving" ~ " ",
+                                  sub_category == "Grandad from Chloe" ~ " ",
+                                  sub_category == "Gray (NCT)" ~ " ",
+                                  sub_category == "Gym" ~ " ",
+                                  sub_category == "Halifax CC" ~ " ",
+                                  sub_category == "HCPC Fee" ~ " ",
+                                  sub_category == "Home Decoration" ~ " ",
+                                  sub_category == "Home Insurance (Annual)" ~ " ",
+                                  sub_category == "Home Security" ~ " ",
+                                  sub_category == "House Pot" ~ " ",
+                                  sub_category == "Internet and TV" ~ " ",
+                                  sub_category == "Isla" ~ " ",
+                                  sub_category == "Joe" ~ " ",
+                                  sub_category == "Joe from Lou" ~ " ",
+                                  sub_category == "Joe Parents	" ~ " ",
+                                  sub_category == "Joe's Phone" ~ " ",
+                                  sub_category == "Kirsten" ~ " ",
+                                  sub_category == "Kirsten from us" ~ " ",
+                                  sub_category == "Kirsten, Søren" ~ " ",
+                                  sub_category == "Kitchen" ~ " ",
+                                  sub_category == "Leaving Do" ~ " ",
+                                  sub_category == "Lee and Ola" ~ " ",
+                                  sub_category == "Life Insurance" ~ " ",
+                                  sub_category == "Living Room" ~ " ",
+                                  sub_category == "Loft" ~ " ",
+                                  sub_category == "Lou" ~ " ",
+                                  sub_category == "Lou from Joe" ~ " ",
+                                  sub_category == "Lou Parents" ~ " ",
+                                  sub_category == "Lou's Birthday Clothes" ~ " ",
+                                  sub_category == "Lou's Birthday Fund 2020" ~ " ",
+                                  sub_category == "Lou's Future" ~ " ",
+                                  sub_category == "Lou's iPhone" ~ " ",
+                                  sub_category == "Lou's Phone" ~ " ",
+                                  sub_category == "Louisa, James, Ciaran" ~ " ",
+                                  sub_category == "Lysander" ~ " ",
+                                  sub_category == "Matt and Anita" ~ " ",
+                                  sub_category == "Medical" ~ " ",
+                                  sub_category == "Morfar from Chloe" ~ " ",
+                                  sub_category == "Mormor from Chloe" ~ " ",
+                                  sub_category == "Mortgage" ~ " ",
+                                  sub_category == "Mortgage Life Cover" ~ " ",
+                                  sub_category == "Moving Costs" ~ " ",
+                                  sub_category == "Nana's Shoe Fund for Chloe" ~ " ",
+                                  sub_category == "Nanna from Chloe" ~ " ",
+                                  sub_category == "Nectar CC" ~ " ",
+                                  sub_category == "Nete" ~ " ",
+                                  sub_category == "New Car Deposit" ~ " ",
+                                  sub_category == "New Glasses" ~ " ",
+                                  sub_category == "New Laptop for Joe" ~ " ",
+                                  sub_category == "New Laptop for Lou" ~ " ",
+                                  sub_category == "New TV" ~ " ",
+                                  sub_category == "Nursery/Childcare" ~ " ",
+                                  sub_category == "Olee" ~ " ",
+                                  sub_category == "Online Services" ~ " ",
+                                  sub_category == "Online Storage" ~ " ",
+                                  sub_category == "Other" ~ " ",
+                                  sub_category == "Our Bedroom" ~ " ",
+                                  sub_category == "Owed To Us" ~ " ",
+                                  sub_category == "Pakkeleg" ~ " ",
+                                  sub_category == "Parking Permit" ~ " ",
+                                  sub_category == "Petrol" ~ " ",
+                                  sub_category == "Rachel" ~ " ",
+                                  sub_category == "Rachel from us" ~ " ",
+                                  sub_category == "Rachel, Barry" ~ " ",
+                                  sub_category == "Relocation Expenses" ~ " ",
+                                  sub_category == "Rent" ~ " ",
+                                  sub_category == "Services" ~ " ",
+                                  sub_category == "Social Workers Union" ~ " ",
+                                  sub_category == "Søren" ~ " ",
+                                  sub_category == "Soren from us" ~ " ",
+                                  sub_category == "Spending Money" ~ " ",
+                                  sub_category == "Stocking fillers" ~ " ",
+                                  sub_category == "Stocking Fillers" ~ " ",
+                                  sub_category == "Study" ~ " ",
+                                  sub_category == "Therapy" ~ " ",
+                                  sub_category == "Transportation" ~ " ",
+                                  sub_category == "Trips" ~ " ",
+                                  sub_category == "TV License (Annual)" ~ " ",
+                                  sub_category == "Upstairs Hall" ~ " ",
+                                  sub_category == "Visitor Permits" ~ " ",
+                                  sub_category == "Water" ~ " ",
+                                  sub_category == "Weekly Food" ~ " ",
+                                  sub_category == "Work Expenses" ~ " ",
+                                  sub_category == "Workspace Upgrades" ~ " ",
+                                  sub_category == "YNAB (Annual)" ~ " "
+                                  ))
+```
+
+```{r}
+budget_clean %>%
+  distinct(sub_category) %>%
+  arrange(sub_category)
+```
+
+```{r}
+budget_clean %>%
+  filter(sub_category == "Weekly Food" & year <= 2020 & month <= 9) %>%
+  ggplot(aes(x = year, y = activity, fill = month)) +
+  geom_col() +
+  facet_wrap(~month)
+
+budget_clean %>%
+  filter(sub_category == "Weekly Food" & year >= 2020 & month >= 9) %>%
+  ggplot(aes(x = year, y = activity, fill = month)) +
+  geom_col() +
+  facet_wrap(~month)
+
+```
 
 
