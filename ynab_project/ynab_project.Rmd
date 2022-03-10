@@ -38,7 +38,7 @@ Notes for initial data cleaning:
 - I'll initially focus on the "budget" dataset - the register seems confusing?
 
 ```{r}
-budget %>%
+budget_clean <- budget %>%
   clean_names() %>%
   separate(month, into = c("month", "year"), sep = " ", remove = TRUE) %>%
   mutate(year = as.numeric(year)) %>%
@@ -54,14 +54,44 @@ budget %>%
                             "Jan" == "Jan"  ~ "01",
                             "Feb" == "Feb"  ~ "02",
                             "Mar" == "Mar"  ~ "03"))) %>%
-  
+  unite(col = "date", c("month", "year"), sep = "")
   
 ```
+
+```{r}
+budget_clean %>%
+  distinct(category_group)
+```
+
+```{r}
+budget_clean %>%
+  distinct(category_group_category)
+```
+So this is problematic - why are there two columns with the same function? From an overview glance, it seems like cat_grp_cat can be dropped, as it combines the other two.
 
 
 ```{r}
-budget %>%
-  ggplot(aes(x = Month, y = Activity)) +
-  geom_col() 
+budget_clean <- budget_clean %>%
+  select(-category_group_category)
 ```
+
+Okay, so then looking at the other two...
+
+```{r}
+budget_clean %>%
+  distinct(category_group)
+```
+
+```{r}
+budget_clean %>%
+  distinct(category) %>%
+  arrange(category)
+```
+That's a LOT... 140. And I can definitely see doubles (some are mistakes). So I will clean this up.
+
+SO - I will:
+- rename the columns (main, and subcat)
+- change the subcat variables
+
+
 
